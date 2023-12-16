@@ -1,0 +1,133 @@
+ion-content {
+  --ion-padding: 0;
+  --background: transparent; /* Color de fondo de la página */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centrar verticalmente en la pantalla */
+  height: 100vh; /* Ajustar la altura al 100% de la ventana */
+  background: linear-gradient(to bottom, #2980b9, #3498db); /* Fondo con degradado de colores */
+}
+
+.title-content {
+  font-size: 24px; /* Texto más grande */
+  font-weight: bold; /* Texto en negrita */
+  text-align: center;
+  color: black; /* Texto en color blanco */
+}
+
+ion-grid {
+  max-width: 100%;
+  --ion-grid-padding: 0; /* Eliminar el espacio interno del grid */
+  width: 100%; /* Ajustar el ancho al 100% */
+}
+
+ion-row {
+  display: flex;
+  justify-content: space-evenly; /* Espaciado uniforme entre botones */
+  gap: 10px; /* Espacio entre los botones */
+  flex-wrap: wrap; /* Acomodar en varias filas */
+  margin: 0; /* Eliminar el margen */
+  width: 100%; /* Ajustar el ancho al 100% */
+}
+
+
+.custom-button {
+  width: calc(70% - -10px); /* Ancho del botón para mostrar cinco por fila con espacio entre ellos */
+  height: 120px; /* Reducir la altura para hacer los botones menos alargados */
+  --border-color: transparent;
+  margin: 5px; /* Espacio entre los botones */
+  background-color: transparent;
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 20px;
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.image-text {
+  font-size: 14px; /* Reducir el tamaño del texto para que se ajuste mejor */
+  font-weight: bold;
+  color: #fff; /* Color de texto */
+  margin-top: 0px; /* Espacio entre la imagen y el texto */
+}
+
+.custom-image {
+  width: 70%; /* Imagen más grande */
+  height: 70%;
+  max-height: 100%;
+  object-fit: contain;
+  margin-bottom: 5px; /* Espacio inferior entre la imagen y el texto */
+}
+
+.bottom-button ion-icon {
+  font-size: 40px; /* Icono más grande */
+  color: #FF5733;
+  background-color: white;
+  margin: 20px 0; /* Espacio en la parte inferior */
+  border-radius: 50%;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-button ion-icon {
+  font-size: 40px; // Tamaño de fuente personalizado
+}
+
+ion-toolbar {
+  --background: transparent;
+  background: url('/assets/images/Escudo.png') left top no-repeat;
+  background-size: 32px;
+  left: 25px;
+  top: 5px;
+  margin-bottom: 4px;
+}
+
+.circular-button {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: white; /* Fondo blanco */
+  border-radius: 50%; /* Borde redondeado para hacerlo circular */
+  width: 23px; /* Ancho del fondo */
+  height: 23px; /* Alto del fondo */
+}
+
+.circular-button ion-icon {
+  font-size: 20px; /* Tamaño de fuente personalizado más grande que el fondo */
+  color: #FF5733;
+  position: absolute; /* Permite superponer el icono sobre el fondo */
+}
+
+.circular-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+
+  ion-searchbar {
+    flex: 1;
+  }
+
+  .cancel-button {
+    margin-left: 8px;
+  }
+}

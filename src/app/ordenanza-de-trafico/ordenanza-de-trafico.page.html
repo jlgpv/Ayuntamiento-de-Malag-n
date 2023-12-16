@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ordenanza de Tráfico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-toolbar color="primary">
+  <ion-searchbar [(ngModel)]="searchTerm" (ionClear)="clearSearch()" (ionInput)="searchItems($event)"></ion-searchbar>
+</ion-toolbar>
+
+<ion-content>
+  <ng-container *ngIf="filteredItems.length > 0; else noResults">
+    <ng-container *ngFor="let item of filteredItems">
+      <ion-text *ngIf="item.title !== ''">
+        <h4 class="ion-text-center"><strong>{{ item.title }}</strong></h4>
+      </ion-text>
+      <ion-text class="ion-text-center" *ngIf="item.chapter !== ''">
+        <h5><strong>{{ item.chapter }}</strong></h5>
+      </ion-text>
+      <ion-text class="ion-text-center" *ngIf="item.section !== ''">
+        <h5><strong>{{ item.section }}</strong></h5>
+      </ion-text>
+      <ion-text>
+        <h5 class="ion-text-left"><strong>{{ item.article }}</strong></h5>
+        <div *ngFor="let paragraph of item.paragraphs">
+          <p class="paragraph" [innerHTML]="highlightText(paragraph)"></p> 
+        </div>
+      </ion-text>
+      <ion-text *ngIf="item.tableheader !== ''">
+        <h5 class="tableheader">{{ item.tableheader }}</h5>
+      </ion-text>
+      <ng-container *ngIf="item.tableheader === 'Límites de velocidad:'">
+        <img src="assets/images/limitesvelocidad.png" alt="limitesvelocidad" style="width: 100%; margin-top: 10px;" />
+      </ng-container>
+      <ng-container *ngIf="item.title === 'ANEXO IV'">
+        <img src="assets/images/anexoiv.png" alt="anexoiv" style="width: 100%;" />
+      </ng-container>
+      <ng-container *ngIf="item.title === 'ANEXO II' || item.title === 'ANEXO III'">
+        <ion-text>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <table *ngIf="item.table" class="table-bordered">
+                  <tr>
+                    <th>{{ item.table[0].col1 }}</th>
+                    <th>{{ item.table[0].col2 }}</th>
+                  </tr>
+                  <tr *ngFor="let row of item.table.slice(1)">
+                    <td class="align-left">{{ row.col1 }}</td>
+                    <td>{{ row.col2 }}</td>
+                  </tr>
+                </table>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-text>
+      </ng-container>
+      <ng-container *ngIf="item.title !== 'ANEXO II' && item.title !== 'ANEXO III' && item.title !== 'ANEXO IV'">
+        <ion-text>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <table *ngIf="item.table" class="table-bordered">
+                  <tr>
+                    <th>{{ item.table[0].col1 }}</th>
+                    <th>{{ item.table[0].col2 }}</th>
+                    <th>{{ item.table[0].col3 }}</th>
+                    <th>{{ item.table[0].col4 }}</th>
+                    <th>{{ item.table[0].col5 }}</th>
+                    <th class="align-left">{{ item.table[0].col6 }}</th>
+                    <th>{{ item.table[0].col7 }}</th>
+                  </tr>
+                  <tr *ngFor="let row of item.table.slice(1)">
+                    <td>{{ row.col1 }}</td>
+                    <td>{{ row.col2 }}</td>
+                    <td>{{ row.col3 }}</td>
+                    <td>{{ row.col4 }}</td>
+                    <td>{{ row.col5 }}</td>
+                    <td class="scrollable-table long-text-column align-left">{{ row.col6 }}</td>
+                    <td>{{ row.col7 }}</td>
+                  </tr>
+                </table>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-text>
+      </ng-container>      
+    </ng-container>
+  </ng-container>
+
+  <ng-template #noResults>
+    <ion-text>No se encontraron resultados</ion-text>
+  </ng-template>
+</ion-content>

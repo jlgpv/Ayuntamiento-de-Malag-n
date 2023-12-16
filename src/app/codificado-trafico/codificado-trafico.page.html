@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="title-content">Ordenanza de Tráfico</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="expandSearchbar()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="search-container" [ngClass]="{ 'expanded': searchExpanded }">
+<span class="matches-count">{{ matchesCount }}/{{ totalSearchResults }}</span>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchItems($event)">
+  <ion-buttons slot="start" class="arrow-buttons">
+      <ion-button fill="clear" (click)="onArrowUpClick()">
+        <ion-icon name="arrow-up"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onArrowDownClick()">
+        <ion-icon name="arrow-down"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-searchbar>
+
+  <ion-button fill="clear" class="cancel-button" (click)="toggleSearchbar()">
+    <ion-icon name="close"></ion-icon>
+  </ion-button>
+</div>
+
+<ion-content>
+  <ng-container *ngIf="filteredItems && filteredItems.length > 0; else noResults">
+    <ng-container *ngFor="let item of filteredItems; let index = index">
+      <ion-text *ngIf="item.title !== ''" class="highlightable">
+        <h4 class="ion-text-center"><strong>{{ item.title }}</strong></h4>
+      </ion-text>
+      <ion-text class="ion-text-center" *ngIf="item.chapter !== ''" class="highlightable">
+        <h5><strong>{{ item.chapter }}</strong></h5>
+      </ion-text>
+      <ion-text class="ion-text-center" *ngIf="item.section !== ''" class="highlightable">
+        <h5><strong>{{ item.section }}</strong></h5>
+      </ion-text>
+      <ion-text class="highlightable">
+        <h5 class="ion-text-left"><strong>{{ item.article }}</strong></h5>
+        <div *ngFor="let paragraph of item.paragraphs" class="highlightable">
+          <p class="paragraph" [innerHTML]="highlightText(paragraph).text"></p>
+        </div>
+      </ion-text>
+      <ion-text *ngIf="item.tableheader !== ''" class="tableheadertotheright">
+        <h5>{{ item.tableheader }}</h5>
+      </ion-text>
+      <ng-container *ngIf="item.tableheader === 'Límites de velocidad:'" class="highlightable">
+        <img src="assets/images/limitesvelocidad.png" alt="limitesvelocidad" style="width: 100%; margin-top: 10px;" />
+      </ng-container>
+      <ng-container *ngIf="item.title === 'ANEXO IV'" class="highlightable">
+        <img src="assets/images/anexoiv.png" alt="anexoiv" style="width: 100%;" />
+      </ng-container>
+
+      <ng-container *ngIf="item.title === 'ANEXO II' || item.title === 'ANEXO III'" class="highlightable">
+        <ion-text>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <table *ngIf="item.table" class="table-bordered">
+                  <tr>
+                    <th>{{ item.table[0].col1 }}</th>
+                    <th>{{ item.table[0].col2 }}</th>
+                  </tr>
+                  <tr *ngFor="let row of item.table.slice(1)">
+                    <td [ngClass]="{ 'highlighted': highlightText(row.col1).isMatch }">
+                      <ng-container *ngFor="let word of row.col1.split(' '); let i = index">
+                        <span [innerHtml]="highlightText(word).text"></span>
+                        <span *ngIf="i !== row.col1.split(' ').length - 1"> </span>
+                      </ng-container>
+                    </td>
+                    <td [ngClass]="{ 'highlighted': highlightText(row.col2).isMatch }">
+                      <ng-container *ngFor="let word of row.col2.split(' '); let i = index">
+                        <span [innerHtml]="highlightText(word).text"></span>
+                        <span *ngIf="i !== row.col2.split(' ').length - 1"> </span>
+                      </ng-container>                  
+                    </td>
+                </table>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-text>
+      </ng-container>
+
+      <ng-container *ngIf="item.title !== 'ANEXO II' && item.title !== 'ANEXO III' && item.title !== 'ANEXO IV'" class="highlightable">
+        <ion-text>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <table *ngIf="item.table" class="table-bordered">
+                  <tr>
+                    <th>{{ item.table[0].col1 }}</th>
+                    <th>{{ item.table[0].col2 }}</th>
+                    <th>{{ item.table[0].col3 }}</th>
+                    <th>{{ item.table[0].col4 }}</th>
+                    <th>{{ item.table[0].col5 }}</th>
+                    <th class="align-center">{{ item.table[0].col6 }}</th>
+                    <th>{{ item.table[0].col7 }}</th>
+                  </tr>
+                  <tr *ngFor="let row of item.table.slice(1)">
+                    <td [class.highlighted]="searchTerm && highlightText(row.col1).isMatch">{{ row.col1 }}</td>
+                    <td [class.highlighted]="searchTerm && highlightText(row.col2).isMatch">{{ row.col2 }}</td>
+                    <td [class.highlighted]="searchTerm && highlightText(row.col3).isMatch">{{ row.col3 }}</td>
+                    <td [class.highlighted]="searchTerm && highlightText(row.col4).isMatch">{{ row.col4 }}</td>
+                    <td [class.highlighted]="searchTerm && highlightText(row.col5).isMatch">{{ row.col5 }}</td>
+                    <td class="align-left" [class.highlighted]="searchTerm && highlightText(row.col6).isMatch">{{ row.col6 }}</td>
+                    <td [class.highlighted]="searchTerm && highlightText(row.col7).isMatch">{{ row.col7 }}</td>
+                  </tr>
+                </table>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-text>
+      </ng-container>
+
+    </ng-container>
+  </ng-container>
+
+  <ng-template #noResults>
+    <ion-text *ngIf="noResults">No se encontraron resultados</ion-text>
+  </ng-template>
+</ion-content>

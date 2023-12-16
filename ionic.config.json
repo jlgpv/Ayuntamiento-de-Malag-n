@@ -1,0 +1,7 @@
+{
+  "name": "grid-menu-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
